@@ -1,0 +1,525 @@
+swagger: "2.0"
+basePath: '{{.BasePath}}'
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: '{{.Description}}'
+  license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+tags:
+- name: kyc
+  description: Onboarding/KYC
+- name: plaid
+  description: Plaid Integrations
+- name: health
+  description: Health Check
+paths:
+  /onboarding/email-verification:
+    post:
+      tags:
+        - kyc
+      description: Check email registration status
+      summary: Check if user account exist or not
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: Valid email address
+          schema:
+            type: string
+      responses:
+        204:
+          description: Success (Email not exist in our database)
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/signup:
+    put:
+      tags:
+        - kyc
+      description: Account creation & KYC
+      summary: Create user account and perform kyc
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: Valid email address
+          schema:
+            type: string
+        - name: first_name
+          in: body
+          required: false
+          description: User first name
+          schema:
+            type: string
+        - name: last_name
+          in: body
+          required: false
+          description: User last name
+          schema:
+            type: string
+        - name: phone
+          in: body
+          required: false
+          description: phone number
+          schema:
+            type: string
+        - name: dob
+          in: body
+          required: false
+          description: Date of birth
+          schema:
+            type: string
+        - name: address
+          in: body
+          required: false
+          description: Ressedential address
+          schema:
+            type: string
+        - name: citizenship
+          in: body
+          required: false
+          description: User citizenship
+          schema:
+            type: string
+        - name: ssn
+          in: body
+          required: false
+          description: Social security number
+          schema:
+            type: string
+        - name: investing_experience
+          in: body
+          required: false
+          description: Whats your investing experience
+          schema:
+            type: string
+        - name: are_you_employed
+          in: body
+          required: false
+          description: Are you employed?
+          schema:
+            type: string
+        - name: family_traded
+          in: body
+          required: false
+          description: Are you or a family member a senior executive or 10% shareholder at a publicly traded company?
+          schema:
+            type: boolean
+        - name: family_brokerage_experience
+          in: body
+          required: false
+          description: Do you or a family member work for another brokerage.
+          schema:
+            type: boolean
+        - name: review_application
+          in: body
+          required: false
+          description: Do you or a family member work for another brokerage.
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: Success
+          schema: 
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/set-password:
+    post:
+      tags:
+        - kyc
+      description: After successfully signup and set password
+      summary: login into the app by providing valid email and password.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: Valid email address
+          schema:
+            type: string
+        - name: token
+          in: body
+          required: true
+          description: Valid token
+          schema:
+            type: string
+      responses:
+        204:
+          description: Success (Account password successfully set.)
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/login:
+    post:
+      tags:
+        - kyc
+      description: login into the app
+      summary: login into the app by providing valid email and password.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: valid email address
+          schema:
+            type: string
+        - name: password
+          in: body
+          required: true
+          description: valid password
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          schema: 
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/countries:
+    get:
+      tags:
+        - kyc
+      description: list of countries
+      summary: List of countries supported in the app
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/CountriesResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/forgot-password:
+    post:
+      tags:
+        - kyc
+      description: forgot password 
+      summary: Enter email to forgot password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: valid email address
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/TokenResponse'
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /onboarding/recover-password:
+    post:
+      tags:
+        - kyc
+      description: recover password 
+      summary: recover password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: valid email address
+          schema:
+            type: string
+        - name: token
+          in: body
+          required: true
+          description: token
+          schema:
+            type: string
+        - name: pin
+          in: body
+          required: true
+          description: valid pin
+          schema:
+            type: string
+      responses:
+        204:
+          description: Success
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/plaid/create_link_token:
+    get:
+      tags:
+        - plaid
+      description: Plaid Create Link Token 
+      summary: Plaid Link token
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: byte
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/LinkTokenResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/plaid/set_access_token:
+    post:
+      tags:
+        - plaid
+      description: Plaid Set Public Token and Account ID
+      summary:  Plaid Set Public Token and Account ID
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: public_token
+          in: body
+          required: true
+          description: Public token
+          schema:
+            type: string
+        - name: account_id
+          in: body
+          required: true
+          description: Selected Account Bank ID
+          schema:
+            type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: byte
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/AccessTokenResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/plaid/charge:
+    post:
+      tags:
+        - plaid
+      description: Plaid Charge Bank Account
+      summary:  Plaid Charge Bank Account
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: account_id
+          in: body
+          required: true
+          description: Bank account id
+          schema:
+            type: string
+        - name: amount
+          in: body
+          required: true
+          description: Amount to charge customer
+          schema:
+            type: integer
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: byte
+      responses:
+        200:
+          description: Success
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /health/health:
+    get:
+      tags:
+        - health
+      description: health check for service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Responds with 200 if service is running
+  /health/ping:
+    get:
+      tags:
+        - health
+      description: health check for service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Responds with 200 if service is running
+
+definitions:
+  ErrorResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      errors:
+        type: object
+        items:
+          type: object
+  CountriesResponse:
+    type: array
+    items: 
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        short_code:
+          type: string
+  AccessTokenResponse:
+     type: object
+     properties:
+       id:
+         type: integer
+       public_token:
+         type: string
+       item_id:
+         type: string
+  TokenResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  LinkTokenResponse:
+    type: object
+    properties:
+      link_token:
+        type: string
+  UserResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      dob:
+        type: string
+      address:
+        type: string
+      citizenship:
+        type: string
+      ssn: 
+        type: string
+      investing_experience:
+        type: string
+      are_you_employed:
+        type: string
+      family_traded:
+        type: string
+      family_brokerage_experience:
+        type: string
+      review_application:
+        type: string
+      created_at:
+        type: timestamp
+      updated_at:
+        type: timestamp

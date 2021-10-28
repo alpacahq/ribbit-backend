@@ -1,0 +1,4887 @@
+{
+  "swagger": "2.0",
+  "basePath": "{{.BasePath}}",
+  "host": "{{.Host}}",
+  "info": {
+    "contact": {},
+    "description": "{{.Description}}",
+    "license": {},
+    "title": "{{.Title}}",
+    "version": "{{.Version}}"
+  },
+  "tags": [
+    {
+      "name": "Onboarding",
+      "description": "Onboarding/KYC"
+    },
+    {
+      "name": "plaid",
+      "description": "Plaid Integrations"
+    },
+    {
+      "name": "Assets",
+      "description": "Assets Currencies Related Endpoint"
+    },
+    {
+      "name": "Users",
+      "description": "Routes for administrators"
+    },
+    {
+      "name": "Market",
+      "description": "Application level routes"
+    },
+    {
+      "name": "Orders",
+      "description": "Place, view, cancel orders (Buy/Sell)"
+    },
+    {
+      "name": "Positions",
+      "description": "The positions API provides information about an account’s current open positions."
+    },
+    {
+      "name": "Account",
+      "description": "Account events and history"
+		},
+    {
+      "name": "Transfer",
+      "description": "Transfer amount into the wallet"
+    },
+    {
+      "name": "Watchlist",
+      "description": "WatchList Related APIS"
+    }
+  ],
+  "paths": {
+		"/magic": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Signup with magic link token",
+				"summary": "Create user account and perform kyc",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+				"responses": {
+					"201": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AuthResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/signup": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Account creation & KYC",
+				"summary": "Create user account and perform kyc",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+				"responses": {
+					"201": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AuthResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "login into the app",
+				"summary": "login into the app by providing valid email and password.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AuthResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/verification/{token}": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Check email registration status",
+				"summary": "Check if user account exist or not",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": "Success (Account is verified)"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/refresh/{token}": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Refresh your token",
+				"summary": "When token will be expired, it'll renew the token.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "expires",
+						"in": "body",
+						"required": true,
+						"description": "Next expiry",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "token",
+						"in": "body",
+						"required": true,
+						"description": "Valid token",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Success (Token renewed.)"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/referral_code/verify/{referral_code}": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Verify referral code",
+				"summary": "It'll check if referral code is valid or not.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+            "in": "path",
+            "name": "referral_code",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success (Referral code verified.)",
+						"schema": {
+							"$ref": "#/definitions/ReferralCodeVerifyResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/plaid/create_link_token": {
+      "get": {
+        "tags": [
+          "plaid"
+        ],
+        "description": "Plaid Create Link Token",
+        "summary": "Plaid Link token",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LinkTokenResponse"
+            }
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/plaid/set_access_token": {
+      "post": {
+        "tags": [
+          "plaid"
+        ],
+        "description": "Plaid Set Public Token and Account ID",
+        "summary": "Plaid Set Public Token and Account ID",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "public_token": {
+                  "description": "public token of stripe",
+                  "type": "string",
+                  "required": "true"
+                },
+                "account_id": {
+                  "description": "the account id of alpaca broker gateway",
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AccessTokenResponse"
+            }
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/plaid/recipient_banks": {
+      "get": {
+        "tags": [
+          "plaid"
+        ],
+        "description": "Plaid Attach Accounts List",
+        "summary": "Plaid Attach Accounts List",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AccountsListResponse"
+            }
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/plaid/recipient_banks/{bank_id}": {
+      "delete": {
+        "tags": [
+          "plaid"
+        ],
+        "description": "Detach plaid account",
+        "summary": "Detach plaid account",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "bank_id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SuccessNoContent"
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/transfer/history": {
+      "get": {
+        "tags": [
+          "Transfer"
+        ],
+        "description": "Get History of transfers",
+        "summary": "Get history of trasfers",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/transfer/bank/{bank_id}/deposit": {
+      "post": {
+        "tags": [
+          "Transfer"
+        ],
+        "description": "Create New Transfer",
+        "summary": "Create New Transfer",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bank_id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "description": "total amount",
+                  "type": "integer",
+                  "required": "true"
+                }
+              }
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/transfer/{transfer_id}/delete": {
+      "delete": {
+        "tags": [
+          "Transfer"
+        ],
+        "description": "Delete Transfer",
+        "summary": "Delete Transfer",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transfer_id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/assets": {
+			"get": {
+				"tags": [
+					"Assets"
+				],
+				"description": "List of assets",
+				"summary": "List of assets",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AssetsResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/assets/{id}": {
+			"get": {
+				"tags": [
+					"Assets"
+				],
+				"description": "Get Single Assets Detail",
+				"summary": "Get Single Asset Details",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AssetResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/assets/{id}/favorites": {
+			"post": {
+				"tags": [
+					"Assets"
+				],
+				"description": "Make Assets Favorites",
+				"summary": "Make Assets Favorites",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AssetResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/assets/favorites": {
+			"get": {
+				"tags": [
+					"Assets"
+				],
+				"description": "Get User Favorites",
+				"summary": "Get User Favorites Assets",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/AssetsResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/profile/shareable-link": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Get shareable link/code",
+				"summary": "This is to get user's referral info",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/ReferralResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/countries": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "list of countries",
+				"summary": "List of countries supported in the app (currently it's only US)",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/CountriesResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/countries/{country_code}/states": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "list of states in country",
+				"summary": "List of states supported in the app",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "country_code",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/StatesResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/countries/{country_code}/states/{state_code}/cities": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "list of cities in state",
+				"summary": "List of cities supported in a state",
+				"produces": [
+					"application/json"
+				],
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "country_code",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "state_code",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/CitiesResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/profile/avatar": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Update User Avatar",
+				"summary": "Update User Avatar",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"201": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"patch": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Update Profile",
+				"summary": "Update user profile",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to update.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/profile": {
+			"get": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Get Profile",
+				"summary": "User profile",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"patch": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "Update Profile",
+				"summary": "Update user profile",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to update.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/account/sign": {
+      "post": {
+        "tags": [
+          "Onboarding"
+        ],
+        "description": "Last step of KYC, when user will be agree the terms, it'll trigger broker api from backend.",
+        "summary": "Sign account",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "SuccessNoContent"
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+		"/forgot-password": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "forgot password",
+				"summary": "Enter email to forgot password",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "email",
+						"in": "body",
+						"required": true,
+						"description": "valid email address",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/TokenResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/recover-password": {
+			"post": {
+				"tags": [
+					"Onboarding"
+				],
+				"description": "recover password",
+				"summary": "recover password",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "email",
+						"in": "body",
+						"required": true,
+						"description": "valid email address",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "token",
+						"in": "body",
+						"required": true,
+						"description": "token",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "pin",
+						"in": "body",
+						"required": true,
+						"description": "valid pin",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/users": {
+			"get": {
+				"tags": [
+					"Users"
+				],
+				"description": "Get users",
+				"summary": "Get users",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsersResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/users/{id}": {
+			"get": {
+				"tags": [
+					"Users"
+				],
+				"description": "Get user",
+				"summary": "Get user",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"patch": {
+				"tags": [
+					"Users"
+				],
+				"description": "Update user",
+				"summary": "Update user",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to update.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Users"
+				],
+				"description": "Delete user",
+				"summary": "Delete user",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/calendar": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "Returns the market calendar.",
+				"summary": "Returns the market calendar.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CalendarResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/account": {
+			"get": {
+				"tags": [
+					"Account"
+				],
+				"description": "Returns the account associated with the API key.",
+				"summary": "Get the account",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AccountResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/account/portfolio/history": {
+			"get": {
+				"tags": [
+					"Account"
+				],
+				"description": "Returns timeseries data about equity and profit/loss (P/L) of the account in requested timespan.",
+				"summary": "Get the account portfolio history",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PortfolioHistoryResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/account/trading-profile": {
+			"get": {
+				"tags": [
+					"Account"
+				],
+				"description": "Returns Trading profiles",
+				"summary": "As a broker you can view more trading details about your users.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TradePortfolioResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/account/stats": {
+			"get": {
+				"tags": [
+					"Account"
+				],
+				"description": "Get Profile Stats",
+				"summary": "Get Stats",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/StatsResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/clock": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "Get market timestamp",
+				"summary": "Get market timestamp",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ClockResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/orders": {
+			"get": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Get orders",
+				"summary": "Get orders",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OrderResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"post": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Place an order",
+				"summary": "Place an order",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "order",
+            "description": "The order to place.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"201": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/OrderResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Cancel all orders",
+				"summary": "Cancel all orders",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/orders/{id}": {
+			"get": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Get order details",
+				"summary": "Get order details",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OrderResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"patch": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Replace an order",
+				"summary": "Replace an order",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "order",
+            "description": "The order to replace.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Orders"
+				],
+				"description": "Cancel an order",
+				"summary": "Cancel an order",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/watchlist": {
+			"get": {
+				"tags": [
+					"Watchlist"
+				],
+				"description": "Get Watchlist",
+				"summary": "Retrieves a list of assets in watchlist.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"post": {
+				"tags": [
+					"Watchlist"
+				],
+				"description": "Add assets in watchlist",
+				"summary": "Add assets in watchlist",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "description": "Enter assets symbol",
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          },
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/watchlist/{symbol}": {
+			"delete": {
+				"tags": [
+					"Watchlist"
+				],
+				"description": "Delete Watchlist",
+				"summary": "Retrieves a list of assets in watchlist.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+    },
+    "/v1/positions": {
+			"get": {
+				"tags": [
+					"Positions"
+				],
+				"description": "Get positions",
+				"summary": "Retrieves a list of open positions.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PositionsResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Positions"
+				],
+				"description": "Close all positions",
+				"summary": "Close all positions",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/positions/{symbol}": {
+			"get": {
+				"tags": [
+					"Positions"
+				],
+				"description": "Get an open position",
+				"summary": "Retrieves the open position for the given symbol.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "symbol",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PositionResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Positions"
+				],
+				"description": "Close a position",
+				"summary": "Closes (liquidates) the open position for the given symbol. Works for both long and short positions.",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "symbol",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+
+    "/v1/market/tickers": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "Returns the snapshots for the queried stock symbols",
+				"summary": "Snapshot - Multiple tickers",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "symbols",
+            "description": "The comma-separated symbols to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketTickersResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/tickers/{symbol}": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The Snapshot API for one ticker provides the latest trade, latest quote, minute bar daily bar and previous daily bar data for a given ticker symbol.",
+				"summary": "Returns the snapshot for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketTickerSymbolResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/stocks/{symbol}/trades": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The Trades API provides historcial trade data for a given ticker symbol on a specified date.",
+				"summary": "Returns trades for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "description": "Filter data equal to or after this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "Filter data equal to or before this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Number of data points to return. Must be in range 1-10000, defaults to 1000.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "page_token",
+            "description": "Pagination token to continue from.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketStockTradesResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/stocks/{symbol}/trades/latest": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The Latest trade API provides the latest trade data for a given ticker symbol.",
+				"summary": "Returns latest trade for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketStockLatestTradeResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/stocks/{symbol}/quotes": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The Quotes API provides NBBO quotes for a given ticker symbol at a specified date.",
+				"summary": "Returns quotes (NBBOs) for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "description": "Filter data equal to or after this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "Filter data equal to or before this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Number of data points to return. Must be in range 1-10000, defaults to 1000.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "page_token",
+            "description": "Pagination token to continue from.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketStockQuotesResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/stocks/{symbol}/quotes/latest": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The Latest quote API provides the latest quote data for a given ticker symbol.",
+				"summary": "Returns latest quote for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketStockLatestQuoteResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		},
+    "/v1/market/stocks/{symbol}/bars": {
+			"get": {
+				"tags": [
+					"Market"
+				],
+				"description": "The bars API returns aggregate historical data for the requested securities.",
+				"summary": "Returns bars for the queried stock symbol",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "description": "The symbol to query for",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "description": "Filter data equal to or after this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "Filter data equal to or before this time in RFC-3339 format. Fractions of a second are not accepted.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Number of data points to return. Must be in range 1-10000, defaults to 1000.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "page_token",
+            "description": "Pagination token to continue from.",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "query",
+            "name": "timeframe",
+            "description": "Timeframe for the aggregation. Available values are: 1Min, 1Hour, 1Day.",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/MarketStockBarsResponse"
+            }
+					},
+					"400": {
+						"description": "Invalid value for query parameter"
+					},
+					"403": {
+						"description": "Unauthorized"
+					},
+					"429": {
+						"description": "Rate limit exceeded (Too many requests)"
+					}
+				}
+			}
+		}
+		
+  },
+  "definitions": {
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "object",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "CountriesResponse": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "short_code": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "StatesResponse": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "short_code": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "CitiesResponse": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ascii": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "string"
+          },
+          "lng": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ReferralResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "MarketStockBarsResponse": {
+      "type": "object",
+      "properties": {
+        "bars": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2021-02-01T16:01:00Z"
+              },
+              "o": {
+                "type": "number",
+                "example": "133.32"
+              },
+              "h": {
+                "type": "number",
+                "example": "133.74"
+              },
+              "l": {
+                "type": "number",
+                "example": "133.31"
+              },
+              "c": {
+                "type": "number",
+                "example": "133.5"
+              },
+              "v": {
+                "type": "number",
+                "example": "9876"
+              }
+            }
+          }
+        },
+        "symbol": {
+          "type": "string",
+          "example": "AAPL"
+        },
+        "next_page_token": {
+          "type": "string",
+          "example": "MjAyMS0wMi0wMVQxNDowMjowMFo7MQ=="
+        }
+      }
+    },
+    "MarketStockLatestQuoteResponse": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "example": "2021-02-06T13:35:08.946977536Z"
+        },
+        "ax": {
+          "type": "string",
+          "example": "C"
+        },
+        "ap": {
+          "type": "number",
+          "example": "387.7"
+        },
+        "as": {
+          "type": "number",
+          "example": "1"
+        },
+        "bx": {
+          "type": "string",
+          "example": "N"
+        },
+        "bp": {
+          "type": "number",
+          "example": "387.67"
+        },
+        "bs": {
+          "type": "number",
+          "example": "1"
+        },
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "R"
+          }
+        }
+      }
+    },
+    "MarketStockQuotesResponse": {
+      "type": "object",
+      "properties": {
+        "quotes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "string",
+                "example": "2021-02-06T13:35:08.946977536Z"
+              },
+              "ax": {
+                "type": "string",
+                "example": "C"
+              },
+              "ap": {
+                "type": "number",
+                "example": "387.7"
+              },
+              "as": {
+                "type": "number",
+                "example": "1"
+              },
+              "bx": {
+                "type": "string",
+                "example": "N"
+              },
+              "bp": {
+                "type": "number",
+                "example": "387.67"
+              },
+              "bs": {
+                "type": "number",
+                "example": "1"
+              },
+              "c": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "R"
+                }
+              }
+            }
+          }
+        },
+        "symbol": {
+          "type": "string",
+          "example": "SPY"
+        },
+        "next_page_token": {
+          "type": "string",
+          "example": "MjAyMS0wMi0wNlQxMzozNTowOVo7MQ=="
+        }
+      }
+    },
+    "MarketStockLatestTradeResponse": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "example": "2021-02-06T13:04:56.334320128Z"
+        },
+        "x": {
+          "type": "string",
+          "example": "C"
+        },
+        "p": {
+          "type": "number",
+          "example": "387.62"
+        },
+        "s": {
+          "type": "number",
+          "example": "100"
+        },
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": " "
+          }
+        },
+        "i": {
+          "type": "number",
+          "example": "52983525029461"
+        },
+        "z": {
+          "type": "string",
+          "example": "B"
+        }
+      }
+    },
+    "MarketStockTradesResponse": {
+      "type": "object",
+      "properties": {
+        "trades": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "string",
+                "example": "2021-02-06T13:04:56.334320128Z"
+              },
+              "x": {
+                "type": "string",
+                "example": "C"
+              },
+              "p": {
+                "type": "number",
+                "example": "387.62"
+              },
+              "s": {
+                "type": "number",
+                "example": "100"
+              },
+              "c": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": " "
+                }
+              },
+              "i": {
+                "type": "number",
+                "example": "52983525029461"
+              },
+              "z": {
+                "type": "string",
+                "example": "B"
+              }
+            }
+          }
+        },
+        "symbol": {
+          "type": "string",
+          "example": "SPY"
+        },
+        "next_page_token": {
+          "type": "string",
+          "example": "MjAyMS0wMi0wNlQxMzowOTo0Mlo7MQ=="
+        }
+      }
+    },
+    "MarketTickerSymbolResponse": {
+      "type": "object",
+      "properties": {
+        "dailyBar": {
+          "type": "object",
+          "properties": {
+            "c": {
+              "type": "number",
+              "example": "57.71"
+            },
+            "h": {
+              "type": "number",
+              "example": "58.24"
+            },
+            "l": {
+              "type": "number",
+              "example": "57.06"
+            },
+            "o": {
+              "type": "number",
+              "example": "58.24"
+            },
+            "t": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-06-04T04:00:00Z"
+            },
+            "v": {
+              "type": "number",
+              "example": "23756"
+            }
+          }
+        },
+        "latestQuote": {
+          "type": "object",
+          "properties": {
+            "ap": {
+              "type": "number",
+              "example": "0"
+            },
+            "as": {
+              "type": "number",
+              "example": "0"
+            },
+            "ax": {
+              "type": "string",
+              "example": "V"
+            },
+            "bp": {
+              "type": "number",
+              "example": "0"
+            },
+            "bs": {
+              "type": "number",
+              "example": "0"
+            },
+            "bx": {
+              "type": "string",
+              "example": "V"
+            },
+            "c": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "R"
+              }
+            },
+            "t": {
+              "type": "string",
+              "example": "2021-06-04T19:59:56.518006242Z"
+            }
+          }
+        },
+        "latestTrade": {
+          "type": "object",
+          "properties": {
+            "c": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": " "
+              }
+            },
+            "i": {
+              "type": "number",
+              "example": "55328680005731"
+            },
+            "p": {
+              "type": "number",
+              "example": "57.71"
+            },
+            "s": {
+              "type": "number",
+              "example": "100"
+            },
+            "t": {
+              "type": "string",
+              "example": "2021-06-04T19:59:55.991032937Z"
+            },
+            "x": {
+              "type": "string",
+              "example": "V"
+            },
+            "z": {
+              "type": "string",
+              "example": "A"
+            }
+          }
+        },
+        "minuteBar": {
+          "type": "object",
+          "properties": {
+            "c": {
+              "type": "number",
+              "example": "57.71"
+            },
+            "h": {
+              "type": "number",
+              "example": "57.71"
+            },
+            "l": {
+              "type": "number",
+              "example": "57.67"
+            },
+            "o": {
+              "type": "number",
+              "example": "57.695"
+            },
+            "t": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-06-04T19:59:00Z"
+            },
+            "v": {
+              "type": "number",
+              "example": "889"
+            }
+          }
+        },
+        "prevDailyBar": {
+          "type": "object",
+          "properties": {
+            "c": {
+              "type": "number",
+              "example": "57.34"
+            },
+            "h": {
+              "type": "number",
+              "example": "58.7"
+            },
+            "l": {
+              "type": "number",
+              "example": "57.19"
+            },
+            "o": {
+              "type": "number",
+              "example": "58.55"
+            },
+            "t": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-06-03T04:00:00Z"
+            },
+            "v": {
+              "type": "number",
+              "example": "37345"
+            }
+          }
+        },
+        "symbol": {
+          "type": "string",
+          "example": "AER"
+        }
+      }
+    },
+    "MarketTickersResponse": {
+      "type": "object",
+      "properties": {
+        "AER": {
+          "type": "object",
+          "properties": {
+            "dailyBar": {
+              "type": "object",
+              "properties": {
+                "c": {
+                  "type": "number",
+                  "example": "57.71"
+                },
+                "h": {
+                  "type": "number",
+                  "example": "58.24"
+                },
+                "l": {
+                  "type": "number",
+                  "example": "57.06"
+                },
+                "o": {
+                  "type": "number",
+                  "example": "58.24"
+                },
+                "t": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-06-04T04:00:00Z"
+                },
+                "v": {
+                  "type": "number",
+                  "example": "23756"
+                }
+              }
+            },
+            "latestQuote": {
+              "type": "object",
+              "properties": {
+                "ap": {
+                  "type": "number",
+                  "example": "0"
+                },
+                "as": {
+                  "type": "number",
+                  "example": "0"
+                },
+                "ax": {
+                  "type": "string",
+                  "example": "V"
+                },
+                "bp": {
+                  "type": "number",
+                  "example": "0"
+                },
+                "bs": {
+                  "type": "number",
+                  "example": "0"
+                },
+                "bx": {
+                  "type": "string",
+                  "example": "V"
+                },
+                "c": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "R"
+                  }
+                },
+                "t": {
+                  "type": "string",
+                  "example": "2021-06-04T19:59:56.518006242Z"
+                }
+              }
+            },
+            "latestTrade": {
+              "type": "object",
+              "properties": {
+                "c": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": " "
+                  }
+                },
+                "i": {
+                  "type": "number",
+                  "example": "55328680005731"
+                },
+                "p": {
+                  "type": "number",
+                  "example": "57.71"
+                },
+                "s": {
+                  "type": "number",
+                  "example": "100"
+                },
+                "t": {
+                  "type": "string",
+                  "example": "2021-06-04T19:59:55.991032937Z"
+                },
+                "x": {
+                  "type": "string",
+                  "example": "V"
+                },
+                "z": {
+                  "type": "string",
+                  "example": "A"
+                }
+              }
+            },
+            "minuteBar": {
+              "type": "object",
+              "properties": {
+                "c": {
+                  "type": "number",
+                  "example": "57.71"
+                },
+                "h": {
+                  "type": "number",
+                  "example": "57.71"
+                },
+                "l": {
+                  "type": "number",
+                  "example": "57.67"
+                },
+                "o": {
+                  "type": "number",
+                  "example": "57.695"
+                },
+                "t": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-06-04T19:59:00Z"
+                },
+                "v": {
+                  "type": "number",
+                  "example": "889"
+                }
+              }
+            },
+            "prevDailyBar": {
+              "type": "object",
+              "properties": {
+                "c": {
+                  "type": "number",
+                  "example": "57.34"
+                },
+                "h": {
+                  "type": "number",
+                  "example": "58.7"
+                },
+                "l": {
+                  "type": "number",
+                  "example": "57.19"
+                },
+                "o": {
+                  "type": "number",
+                  "example": "58.55"
+                },
+                "t": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-06-03T04:00:00Z"
+                },
+                "v": {
+                  "type": "number",
+                  "example": "37345"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ReferralCodeVerifyResponse": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "referral_code": {
+          "type": "string"
+        }
+      }
+    },
+    "AssetsResponse": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "class": {
+            "type": "string"
+          },
+          "easy_to_borrow": {
+            "type": "boolean"
+          },
+          "exchange": {
+            "type": "string"
+          },
+          "fractionable": {
+            "type": "boolean"
+          },
+          "marginable": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          }, 
+          "tradable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "AssetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "class": {
+          "type": "string"
+        },
+        "easy_to_borrow": {
+          "type": "boolean"
+        },
+        "exchange": {
+          "type": "string"
+        },
+        "fractionable": {
+          "type": "boolean"
+        },
+        "marginable": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "shortable": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        }, 
+        "tradable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AccountsListResponse": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "id": {
+            "type": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "state_province": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "street_address": {
+            "type": "string"
+          },
+        
+          "country": {
+            "type": "string"
+          },
+        
+          "city": {
+            "type": "string"
+          },
+        
+          "bank_code_type": {
+            "type": "string"
+          },
+        
+          "bank_code": {
+            "type": "string"
+          },
+          "account_number": {
+            "type": "string"
+          },
+          "account_id": {
+            "type": "string"
+          },
+        
+          "created_at": {
+            "type": "timestamp"
+          },
+          "updated_at": {
+            "type": "timestamp"
+          }
+        }
+      }
+    },
+    "AccessTokenResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string"
+        },
+        "state_province": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "street_address": {
+          "type": "string"
+        },
+      
+        "country": {
+          "type": "string"
+        },
+      
+        "city": {
+          "type": "string"
+        },
+      
+        "bank_code_type": {
+          "type": "string"
+        },
+      
+        "bank_code": {
+          "type": "string"
+        },
+        "account_number": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+      
+        "created_at": {
+          "type": "timestamp"
+        },
+        "updated_at": {
+          "type": "timestamp"
+        }
+      }
+    },
+    "TokenResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "LinkTokenResponse": {
+      "type": "object",
+      "properties": {
+        "link_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ClockResponse": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string"
+        },
+        "is_open": {
+          "type": "boolean"
+        },
+        "next_open": {
+          "type": "string"
+        },
+        "next_close": {
+          "type": "string"
+        }
+      }
+    },
+    "CalendarResponse": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date",
+          "example": "2018-01-03"
+        },
+        "open": {
+          "type": "string",
+          "example": "09:30"
+        },
+        "close": {
+          "type": "string",
+          "example": "16:00"
+        }
+      }
+    },
+    "PositionsResponse": {
+      "type": "array",
+      "properties": {
+        "0": {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "example": "904837e3-3b76-47ec-b432-046db621571b"
+            },
+            "symbol": {
+              "type": "string",
+              "example": "AAPL"
+            },
+            "exchange": {
+              "type": "string",
+              "example": "NASDAQ"
+            },
+            "asset_class": {
+              "type": "string",
+              "example": "us_equity"
+            },
+            "avg_entry_price": {
+              "type": "string",
+              "example": "100.0"
+            },
+            "qty": {
+              "type": "string",
+              "example": "5"
+            },
+            "side": {
+              "type": "string",
+              "example": "long"
+            },
+            "market_value": {
+              "type": "string",
+              "example": "600.0"
+            },
+            "cost_basis": {
+              "type": "string",
+              "example": "500.0"
+            },
+            "unrealized_pl": {
+              "type": "string",
+              "example": "100.0"
+            },
+            "unrealized_plpc": {
+              "type": "string",
+              "example": "0.20"
+            },
+            "unrealized_intraday_pl": {
+              "type": "string",
+              "example": "10.0"
+            },
+            "unrealized_intraday_plpc": {
+              "type": "string",
+              "example": "0.0084"
+            },
+            "current_price": {
+              "type": "string",
+              "example": "120.0"
+            },
+            "lastday_price": {
+              "type": "string",
+              "example": "119.0"
+            },
+            "change_today": {
+              "type": "string",
+              "example": "0.0084"
+            }
+          }
+        }
+      }
+    },
+    "PositionResponse": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "example": "904837e3-3b76-47ec-b432-046db621571b"
+        },
+        "symbol": {
+          "type": "string",
+          "example": "AAPL"
+        },
+        "exchange": {
+          "type": "string",
+          "example": "NASDAQ"
+        },
+        "asset_class": {
+          "type": "string",
+          "example": "us_equity"
+        },
+        "avg_entry_price": {
+          "type": "string",
+          "example": "100.0"
+        },
+        "qty": {
+          "type": "string",
+          "example": "5"
+        },
+        "side": {
+          "type": "string",
+          "example": "long"
+        },
+        "market_value": {
+          "type": "string",
+          "example": "600.0"
+        },
+        "cost_basis": {
+          "type": "string",
+          "example": "500.0"
+        },
+        "unrealized_pl": {
+          "type": "string",
+          "example": "100.0"
+        },
+        "unrealized_plpc": {
+          "type": "string",
+          "example": "0.20"
+        },
+        "unrealized_intraday_pl": {
+          "type": "string",
+          "example": "10.0"
+        },
+        "unrealized_intraday_plpc": {
+          "type": "string",
+          "example": "0.0084"
+        },
+        "current_price": {
+          "type": "string",
+          "example": "120.0"
+        },
+        "lastday_price": {
+          "type": "string",
+          "example": "119.0"
+        },
+        "change_today": {
+          "type": "string",
+          "example": "0.0084"
+        }
+      }
+    },
+    "AccountResponse": {
+      "type": "object",
+      "properties": {
+        "account_blocked": {
+          "type": "boolean"
+        },
+        "account_number": {
+          "type": "string",
+          "example": "010203ABCD"
+        },
+        "buying_power": {
+          "type": "string",
+          "example": "262113.632"
+        },
+        "cash": {
+          "type": "string",
+          "example": "-23140.2"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2019-06-12T22:47:07.99658Z"
+        },
+        "currency": {
+          "type": "string",
+          "example": "USD"
+        },
+        "daytrade_count": {
+          "type": "integer",
+          "format": "int32",
+          "example": "0"
+        },
+        "daytrading_buying_power": {
+          "type": "string",
+          "example": "262113.632"
+        },
+        "equity": {
+          "type": "string",
+          "example": "103820.56"
+        },
+        "id": {
+          "type": "string",
+          "example": "e6fe16f3-64a4-4921-8928-cadf02f92f98"
+        },
+        "initial_margin": {
+          "type": "string",
+          "example": "63480.38"
+        },
+        "last_equity": {
+          "type": "string",
+          "example": "103529.24"
+        },
+        "last_maintenance_margin": {
+          "type": "string",
+          "example": "38000.832"
+        },
+        "long_market_value": {
+          "type": "string",
+          "example": "126960.76"
+        },
+        "maintenance_margin": {
+          "type": "string",
+          "example": "38088.228"
+        },
+        "multiplier": {
+          "type": "string",
+          "example": "4"
+        },
+        "pattern_day_trader": {
+          "type": "boolean"
+        },
+        "portfolio_value": {
+          "type": "string",
+          "example": "103820.56"
+        },
+        "regt_buying_power": {
+          "type": "string",
+          "example": "80680.36"
+        },
+        "short_market_value": {
+          "type": "string",
+          "example": "0"
+        },
+        "shorting_enabled": {
+          "type": "boolean"
+        },
+        "sma": {
+          "type": "string",
+          "example": "0"
+        },
+        "status": {
+          "type": "string",
+          "example": "ACTIVE"
+        },
+        "trade_suspended_by_user": {
+          "type": "boolean"
+        },
+        "trading_blocked": {
+          "type": "boolean"
+        },
+        "transfers_blocked": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PortfolioHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64",
+            "example": "1580826600000"
+          }
+        },
+        "equity": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "example": "27423.73"
+          }
+        },
+        "profit_loss": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "example": "11.8"
+          }
+        },
+        "profit_loss_pct": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "example": "0.000430469507254688"
+          }
+        },
+        "base_value": {
+          "type": "number",
+          "example": "27411.93"
+        },
+        "timeframe": {
+          "type": "string",
+          "example": "15Min"
+        }
+      }
+    },
+    "TradePortfolioResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "uuid",
+          "example": "c8f1ef5d-edc0-4f23-9ee4-378f19cb92a4"
+        },
+        "account_number": {
+          "type": "number",
+          "example": "927584925"
+        },
+        "status": {
+          "type": "string",
+          "example": "ACTIVE"
+        },
+        "currency": {
+          "type": "string",
+          "example": "USD"
+        },
+        "buying_power": {
+          "type": "string",
+          "example": "103556.8572572922"
+        },
+        "regt_buying_power": {
+          "type": "string",
+          "example": "52921.2982330664"
+        },
+        "daytrading_buying_power": {
+          "type": "string",
+          "example": "103556.8572572922"
+        },
+        "cash": {
+          "type": "string",
+          "example": "24861.91"
+        },
+        "cash_withdrawable": {
+          "type": "string",
+          "example": "17861.91"
+        },
+        "cash_transferable": {
+          "type": "string",
+          "example": "24861.91"
+        },
+        "pending_transfer_out": {
+          "type": "string",
+          "example": "0"
+        },
+        "portfolio_value": {
+          "type": "string",
+          "example": "24861.91"
+        },
+        "pattern_day_trader": {
+          "type": "boolean",
+          "example": "false"
+        },
+        "trading_blocked": {
+          "type": "boolean",
+          "example": "true"
+        },
+        "transfers_blocked": {
+          "type": "boolean",
+          "example": "false"
+        },
+        "account_blocked": {
+          "type": "boolean",
+          "example": "false"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2021-03-01T13:28:49.270232Z"
+        },
+        "trade_suspended_by_user": {
+          "type": "boolean",
+          "example": "true"
+        },
+        "multiplier": {
+          "type": "string",
+          "example": "4"
+        },
+        "equity": {
+          "type": "string",
+          "example": "28059.3882330664"
+        },
+        "last_equity": {
+          "type": "string",
+          "example": "26977.323677655"
+        },
+        "long_market_value": {
+          "type": "string",
+          "example": "3197.4782330664"
+        },
+        "short_market_value": {
+          "type": "string",
+          "example": "0"
+        },
+        "initial_margin": {
+          "type": "string",
+          "example": "111.111"
+        },
+        "maintenance_margin": {
+          "type": "string",
+          "example": "132.122"
+        },
+        "last_maintenance_margin": {
+          "type": "string",
+          "example": "234.22"
+        },
+        "sma": {
+          "type": "string",
+          "example": "233"
+        },
+
+        "daytrade_count": {
+          "type": "string",
+          "example": "1"
+        },
+        "previous_close": {
+          "type": "string",
+          "example": "2021-04-01T19:00:00-04:00"
+        },
+        "last_long_market_value": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_short_market_value": {
+          "type": "string",
+          "example": "0"
+        },
+        "last_cash": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_initial_margin": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_regt_buying_power": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_daytrading_buying_power": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_buying_power": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "last_daytrade_count": {
+          "type": "string",
+          "example": "3115.413677655"
+        },
+        "clearing_broker": {
+          "type": "string",
+          "example": "VELOX"
+        }
+      }
+    },
+    "StatsResponse": {
+      "type": "object",
+      "properties": {
+        "reward_earned": {
+          "type": "number",
+          "example": 100
+        },
+        "people_invited": {
+          "type": "number",
+          "example": "927584925"
+        }
+      }
+    },
+    "UsersResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "created_at": { 
+            "type": "string"
+          },
+          "updated_at": { 
+            "type": "string"
+          },
+          "id": 4,
+          "first_name": { 
+            "type": "string"
+          },
+          "last_name": { 
+            "type": "string"
+          },
+          "username": { 
+            "type": "string"
+          },
+          "email": { 
+            "type": "string"
+          },
+          "mobile": { 
+            "type": "string"
+          },
+          "country_code": { 
+            "type": "string"
+          },
+          "address": { 
+            "type": "string"
+          },
+          "last_login": { 
+            "type": "string"
+          },
+          "verified": false,
+          "active": false,
+          "role": {
+            "type": "object",
+            "properties": {
+              "id": 0,
+              "access_level": 0,
+              "name": { 
+                "type": "string"
+              }
+            }
+          },
+          "account_id": { 
+            "type": "string"
+          },
+          "account_number": { 
+            "type": "string"
+          },
+          "account_currency": { 
+            "type": "string"
+          },
+          "account_status": { 
+            "type": "string"
+          },
+          "dob": { 
+            "type": "string"
+          },
+          "city": { 
+            "type": "string"
+          },
+          "state": { 
+            "type": "string"
+          },
+          "country": { 
+            "type": "string"
+          },
+          "tax_id_type": { 
+            "type": "string"
+          },
+          "tax_id": { 
+            "type": "string"
+          },
+          "funding_source": { 
+            "type": "string"
+          },
+          "employment_status": { 
+            "type": "string"
+          },
+          "investing_experience": { 
+            "type": "string"
+          },
+          "public_shareholder": { 
+            "type": "string"
+          },
+          "another_brokerage": { 
+            "type": "string"
+          },
+          "device_id": { 
+            "type": "string"
+          },
+          "profile_completion": { 
+            "type": "string"
+          },
+          "bio": { 
+            "type": "string"
+          },
+          "facebook_url": { 
+            "type": "string"
+          },
+          "twitter_url": { 
+            "type": "string"
+          },
+          "instagram_url": { 
+            "type": "string"
+          },
+          "public_portfolio": { 
+            "type": "string"
+          },
+          "avatar": { 
+            "type": "string"
+          }
+        }
+      }
+    },
+    "OrderResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "client_order_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "submitted_at": {
+          "type": "string"
+        },
+        "filled_at": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "expired_at": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "canceled_at": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "failed_at": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "replaced_at": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "replaced_by": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "replaces": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "asset_id": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "asset_class": {
+          "type": "string"
+        },
+        "notional": {
+          "type": "string"
+        },
+        "qty": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "filled_qty": {
+          "type": "string"
+        },
+        "filled_avg_price": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "order_class": {
+          "type": "string"
+        },
+        "order_type": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "side": {
+          "type": "string"
+        },
+        "time_in_force": {
+          "type": "string"
+        },
+        "limit_price": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "stop_price": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "status": {
+          "type": "string"
+        },
+        "extended_hours": {
+          "type": "boolean"
+        },
+        "legs": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "trail_percent": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "trail_price": {
+          "type": "string",
+          "format": "nullable"
+        },
+        "hwm": {
+          "type": "string",
+          "format": "nullable"
+        }
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "created_at": { 
+          "type": "string"
+        },
+        "updated_at": { 
+          "type": "string"
+        },
+        "id": 4,
+        "first_name": { 
+          "type": "string"
+        },
+        "last_name": { 
+          "type": "string"
+        },
+        "username": { 
+          "type": "string"
+        },
+        "email": { 
+          "type": "string"
+        },
+        "mobile": { 
+          "type": "string"
+        },
+        "country_code": { 
+          "type": "string"
+        },
+        "address": { 
+          "type": "string"
+        },
+        "last_login": { 
+          "type": "string"
+        },
+        "verified": false,
+        "active": false,
+        "role": {
+          "type": "object",
+          "properties": {
+            "id": 0,
+            "access_level": 0,
+            "name": { 
+              "type": "string"
+            }
+          }
+        },
+        "account_id": { 
+          "type": "string"
+        },
+        "account_number": { 
+          "type": "string"
+        },
+        "account_currency": { 
+          "type": "string"
+        },
+        "account_status": { 
+          "type": "string"
+        },
+        "dob": { 
+          "type": "string"
+        },
+        "city": { 
+          "type": "string"
+        },
+        "state": { 
+          "type": "string"
+        },
+        "country": { 
+          "type": "string"
+        },
+        "tax_id_type": { 
+          "type": "string"
+        },
+        "tax_id": { 
+          "type": "string"
+        },
+        "funding_source": { 
+          "type": "string"
+        },
+        "employment_status": { 
+          "type": "string"
+        },
+        "investing_experience": { 
+          "type": "string"
+        },
+        "public_shareholder": { 
+          "type": "string"
+        },
+        "another_brokerage": { 
+          "type": "string"
+        },
+        "device_id": { 
+          "type": "string"
+        },
+        "profile_completion": { 
+          "type": "string"
+        },
+				"bio": { 
+					"type": "string"
+				},
+				"facebook_url": { 
+					"type": "string"
+				},
+				"twitter_url": { 
+					"type": "string"
+				},
+				"instagram_url": { 
+					"type": "string"
+				},
+				"public_portfolio": { 
+					"type": "string"
+				},
+				"avatar": { 
+					"type": "string"
+				}
+      }
+    },
+    "AuthResponse": {
+      "type": "object",
+      "properties": {
+        "token": { 
+          "type": "string"
+        },
+        "expires": { 
+          "type": "string"
+        },
+        "refresh_token": { 
+          "type": "string"
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "created_at": { 
+              "type": "string"
+            },
+            "updated_at": { 
+              "type": "string"
+            },
+            "id": 4,
+            "first_name": { 
+              "type": "string"
+            },
+            "last_name": { 
+              "type": "string"
+            },
+            "username": { 
+              "type": "string"
+            },
+            "email": { 
+              "type": "string"
+            },
+            "mobile": { 
+              "type": "string"
+            },
+            "country_code": { 
+              "type": "string"
+            },
+            "address": { 
+              "type": "string"
+            },
+            "last_login": { 
+              "type": "string"
+            },
+            "verified": false,
+            "active": false,
+            "role": {
+              "type": "object",
+              "properties": {
+                "id": 0,
+                "access_level": 0,
+                "name": { 
+                  "type": "string"
+                }
+              }
+            },
+            "account_id": { 
+              "type": "string"
+            },
+            "account_number": { 
+              "type": "string"
+            },
+            "account_currency": { 
+              "type": "string"
+            },
+            "account_status": { 
+              "type": "string"
+            },
+            "dob": { 
+              "type": "string"
+            },
+            "city": { 
+              "type": "string"
+            },
+            "state": { 
+              "type": "string"
+            },
+            "country": { 
+              "type": "string"
+            },
+            "tax_id_type": { 
+              "type": "string"
+            },
+            "tax_id": { 
+              "type": "string"
+            },
+            "funding_source": { 
+              "type": "string"
+            },
+            "employment_status": { 
+              "type": "string"
+            },
+            "investing_experience": { 
+              "type": "string"
+            },
+            "public_shareholder": { 
+              "type": "string"
+            },
+            "another_brokerage": { 
+              "type": "string"
+            },
+            "device_id": { 
+              "type": "string"
+            },
+            "profile_completion": { 
+              "type": "string"
+            },
+						"bio": { 
+							"type": "string"
+						},
+						"facebook_url": { 
+							"type": "string"
+						},
+						"twitter_url": { 
+							"type": "string"
+						},
+						"instagram_url": { 
+							"type": "string"
+						},
+						"public_portfolio": { 
+							"type": "string"
+						},
+						"avatar": { 
+							"type": "string"
+						}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  caddy:
+    image: "caddy:latest"
+    volumes:
+      - ./private_key.pem:/root/certs/private_key.pem
+      - ./private_cert.pem:/root/certs/private_cert.pem
+      - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
+    ports:
+      - "443:443"
+    depends_on:
+     - ribbit
+
+  ribbit:
+    depends_on:
+      - database
+    build: .
+    entrypoint: ["sh", "-c", "./initdb.sh"]
+
+  database:
+    image: "postgres:14.0"
+    ports:
+      - "5432:5432"
+    # volumes:
+    # add local volume mount if needed
+    #   - ./data:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: password

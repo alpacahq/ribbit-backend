@@ -1,0 +1,139 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-configmap
+data:
+  database_url: postgresql-service
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL3JlZ2lzdHJ5LmdpdGxhYi5jb20iOnsidXNlcm5hbWUiOiJyZW1vdGUtYWRtaW4iLCJwYXNzd29yZCI6IjhaYjU3X1duck5SRFF5eVlGV0s0IiwiZW1haWwiOiJub3QtbmVlZGVkQGV4YW1wbGUuY29tIiwiYXV0aCI6ImNtVnRiM1JsTFdGa2JXbHVPamhhWWpVM1gxZHVjazVTUkZGNWVWbEdWMHMwIn19fQ==
+kind: Secret
+metadata:
+  creationTimestamp: "2021-08-13T14:23:14Z"
+  name: regcerd
+  namespace: default
+  resourceVersion: "24010"
+  uid: 6876b2ff-36cf-4b06-b8f3-49e0d7b51133
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-secret
+type: Opaque # Default key/value secret type
+data:
+  postgres-root-username: YWxpQHBvc3RncmVzLmNvbQ== # echo -n 'username' | base64
+  postgres-root-password: YWxwYWNhMTIz # echo -n 'username' | base64
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  serviceName: postgresql-service
+  selector:
+    matchLabels:
+      app: postgresql
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: postgres:latest
+        volumeMounts:
+        - name: postgresql-disk
+          mountPath: /data
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: postgres-root-username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: postgres-root-password
+        - name: PGDATA
+          value: /data/pgdata
+  # Volume Claim
+  volumeClaimTemplates:
+  - metadata:
+      name: postgresql-disk
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 25Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-lb
+spec:
+  selector:
+    app: postgresql
+  type: LoadBalancer
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: api-backend
+  labels:
+    app: api-backend
+spec:
+  selector:
+    matchLabels:
+      app: api-backend
+  replicas: 1 # tells deployment to run x pods matching the template
+  template:
+    metadata:
+      labels:
+        app: api-backend
+    spec: # For pod
+      containers:
+      - name: api-backend
+        image: registry.github.com/alpacahq/ribbit-backend/env-printer:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: postgres-root-username
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: postgres-root-password
+        - name: PGADMIN_CONFIG_DEFAULT_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-configmap
+              key: database_url
+        - name: PGADMIN_LISTEN_PORT
+          value: "8081"
+      imagePullSecrets:
+      - name: regcerd
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: api-backend-service
+spec:
+  selector:
+    app: api-backend
+  type: LoadBalancer # for External service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001 # External port (can be in between 30000-32767)
