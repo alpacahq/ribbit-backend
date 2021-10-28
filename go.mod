@@ -10,7 +10,7 @@ require (
 	github.com/fergusstrange/embedded-postgres v1.4.0
 	github.com/gertd/go-pluralize v0.1.7
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/go-pg/migrations/v7 v7.1.11
 	github.com/go-pg/pg/v9 v9.2.0
 	github.com/joho/godotenv v1.3.0
@@ -26,7 +26,6 @@ require (
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.0
-	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14 // indirect
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
 	go.uber.org/zap v1.16.0
