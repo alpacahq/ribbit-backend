@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -198,7 +199,10 @@ func (a *AccountService) uploadAvatar(c *gin.Context) {
 			return
 		}
 
-		filename := header.Filename
+		filename := filepath.Base(header.Filename)
+		if filename == "." {
+			apperr.Response(c, apperr.New(http.StatusUnprocessableEntity, "File has malformed file format"))
+		}
 		newFileName := strconv.Itoa(user.ID) + "-" + filename
 		// delete old file
 		if user.Avatar != "" {

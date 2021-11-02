@@ -320,7 +320,6 @@ func (s *Service) Magic(c *gin.Context, m *request.MagicSignup) (*model.LoginRes
 	// Validate magic token
 
 	tkn := c.Request.Header.Get("Authorization")
-	fmt.Println(tkn)
 
 	authBearer := "Bearer"
 	if tkn == "" {
