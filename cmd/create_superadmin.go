@@ -30,10 +30,8 @@ var createSuperAdminCmd = &cobra.Command{
 		}
 
 		password, _ = cmd.Flags().GetString("password")
-		fmt.Println(password)
 		if password == "" {
 			password, _ = secret.GenerateRandomString(16)
-			fmt.Printf("No password provided, so we have generated one for you: %s\n", password)
 		}
 
 		db := config.GetConnection()
