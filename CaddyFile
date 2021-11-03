@@ -1,5 +1,5 @@
 ribbit.com:443 {
-    tls /root/certs/private_cert.pem /root/certs/private_key.pem
+    tls /root/certs/public_cert.pem /root/certs/private_key.pem
 
     reverse_proxy http://ribbit:8080
 }

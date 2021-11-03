@@ -82,4 +82,4 @@ Temporary Items
 tmp
 tmp2
 private_key.pem
-private_cert.pem
+public_cert.pem
