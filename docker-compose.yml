@@ -4,7 +4,7 @@ services:
     image: "caddy:latest"
     volumes:
       - ./private_key.pem:/root/certs/private_key.pem
-      - ./private_cert.pem:/root/certs/private_cert.pem
+      - ./public_cert.pem:/root/certs/public_cert.pem
       - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
     ports:
       - "443:443"
@@ -23,6 +23,6 @@ services:
       - "5432:5432"
     # volumes:
     # add local volume mount if needed
-    #   - ./data:/var/lib/postgresql/data/pgdata
+      # - ./data:/var/lib/postgresql/data/pgdata
     environment:
       POSTGRES_PASSWORD: password
