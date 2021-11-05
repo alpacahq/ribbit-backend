@@ -54,6 +54,12 @@ After successfully installing it in your machine, run `mkcert -install`
 chmod 700 ./generate-ssl.sh
 ```
 
+The command will do two things:
+1. Generate certificates Caddy reverse proxy namely (ribbit.com.pem — private key; ribbit-public.com.pem — public cert)
+2. Generate certificates for the client side payload encryption via openssl
+
+After running the script, the give the client side (iOS and Android apps) the public key namely `public_key.pem`
+
 ### Initializing and starting the application
 -----
 #### Run it with docker compose
