@@ -40,7 +40,7 @@ func (u *UserRepo) View(id int) (*model.User, error) {
 // View returns single user by referral code
 func (u *UserRepo) FindByReferralCode(referralCode string) (*model.ReferralCodeVerifyResponse, error) {
 	var user = new(model.ReferralCodeVerifyResponse)
-	sql := `SELECT "user"."first_name", "user"."last_name", "user"."referral_code"
+	sql := `SELECT "user"."first_name", "user"."last_name", "user"."referral_code", "user"."username"
 	FROM "users" AS "user" 
 	WHERE ("user"."referral_code" = ? and deleted_at is null)`
 	_, err := u.db.QueryOne(user, sql, referralCode)
