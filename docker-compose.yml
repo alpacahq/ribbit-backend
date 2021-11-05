@@ -3,8 +3,8 @@ services:
   caddy:
     image: "caddy:latest"
     volumes:
-      - ./private_key.pem:/root/certs/private_key.pem
-      - ./public_cert.pem:/root/certs/public_cert.pem
+      - ./ribbit.com.pem:/root/certs/ribbit.com.pem
+      - ./ribbit-public.com.pem:/root/certs/ribbit-public.com.pem
       - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
     ports:
       - "443:443"

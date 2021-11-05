@@ -82,4 +82,6 @@ Temporary Items
 tmp
 tmp2
 private_key.pem
-public_cert.pem
+public_key.pem
+ribbit-public.com.pem
+ribbit.com.pem
