@@ -32,6 +32,7 @@ func TestLogin(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Invalid request",
@@ -77,7 +78,7 @@ func TestLogin(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()
@@ -111,6 +112,7 @@ func TestRefresh(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Fail on FindByToken",
@@ -147,7 +149,7 @@ func TestRefresh(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()
@@ -179,6 +181,7 @@ func TestSignup(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Success",
@@ -259,7 +262,7 @@ func TestSignup(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()
@@ -285,6 +288,7 @@ func TestVerification(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Success",
@@ -335,7 +339,7 @@ func TestVerification(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()
@@ -361,6 +365,7 @@ func TestMobile(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Success",
@@ -432,7 +437,7 @@ func TestMobile(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()
@@ -458,6 +463,7 @@ func TestMobileVerify(t *testing.T) {
 		jwt         *mock.JWT
 		m           *mock.Mail
 		mobile      *mock.Mobile
+		magic       *mock.Magic
 	}{
 		{
 			name:       "Success",
@@ -534,7 +540,7 @@ func TestMobileVerify(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			r := gin.New()
-			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile)
+			authService := auth.NewAuthService(tt.userRepo, tt.accountRepo, tt.jwt, tt.m, tt.mobile, tt.magic)
 			service.AuthRouter(authService, r)
 			ts := httptest.NewServer(r)
 			defer ts.Close()

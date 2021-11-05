@@ -7,7 +7,7 @@ import (
 // User database mock
 type User struct {
 	ViewFn               func(int) (*model.User, error)
-	FindByReferralCodeFn func(string) (*model.User, error)
+	FindByReferralCodeFn func(string) (*model.ReferralCodeVerifyResponse, error)
 	FindByUsernameFn     func(string) (*model.User, error)
 	FindByEmailFn        func(string) (*model.User, error)
 	FindByMobileFn       func(string, string) (*model.User, error)
@@ -24,7 +24,7 @@ func (u *User) View(id int) (*model.User, error) {
 }
 
 // FindByReferralCode mock
-func (u *User) FindByReferralCode(username string) (*model.User, error) {
+func (u *User) FindByReferralCode(username string) (*model.ReferralCodeVerifyResponse, error) {
 	return u.FindByReferralCodeFn(username)
 }
 

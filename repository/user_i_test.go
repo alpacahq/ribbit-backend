@@ -1,6 +1,7 @@
 package repository_test
 
 import (
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -84,7 +85,7 @@ func (suite *UserTestSuite) TestUserView() {
 			create:    false,
 			user:      suite.u,
 			db:        suite.db,
-			wantError: apperr.NotFound,
+			wantError: &apperr.APPError{Status: http.StatusNotFound, Message: "400 not found"},
 		},
 		{
 			name:      "Success: view user, find user",
@@ -140,8 +141,8 @@ func (suite *UserTestSuite) TestUserView() {
 				u, err = userRepo.FindByEmail(tt.user.Email)
 				assert.Nil(t, u)
 				assert.Equal(t, tt.wantError, err)
-				u, err = userRepo.FindByReferralCode(tt.user.ReferralCode)
-				assert.Nil(t, u)
+				findByReferralCodeResponse, err := userRepo.FindByReferralCode(tt.user.ReferralCode)
+				assert.Nil(t, findByReferralCodeResponse)
 				assert.Equal(t, tt.wantError, err)
 				u, err = userRepo.FindByUsername(tt.user.Username)
 				assert.Nil(t, u)
