@@ -23,8 +23,8 @@ metadata:
   name: postgresql-secret
 type: Opaque # Default key/value secret type
 data:
-  postgres-root-username: YWxpQHBvc3RncmVzLmNvbQ== # echo -n 'username' | base64
-  postgres-root-password: YWxwYWNhMTIz # echo -n 'username' | base64
+  postgres-root-username: dXNlcm5hbWU= # echo -n 'username' | base64
+  postgres-root-password: cGFzc3dvcmQ= # echo -n 'password' | base64
 ---
 apiVersion: apps/v1
 kind: StatefulSet
