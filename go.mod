@@ -10,7 +10,7 @@ require (
 	github.com/fergusstrange/embedded-postgres v1.4.0
 	github.com/gertd/go-pluralize v0.1.7
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.7.0
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-pg/migrations/v7 v7.1.11
 	github.com/go-pg/pg/v9 v9.2.0
 	github.com/joho/godotenv v1.3.0
