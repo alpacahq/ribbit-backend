@@ -30,6 +30,6 @@ require (
 	github.com/swaggo/swag v1.7.0
 	go.uber.org/zap v1.16.0
 	go4.org v0.0.0-20201209231011-d4a079459e60 // indirect
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	golang.org/x/crypto v0.1.0
 	gopkg.in/go-playground/validator.v8 v8.18.2
 )
