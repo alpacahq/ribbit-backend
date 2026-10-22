@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine
+FROM golang:1.26.10-alpine
 RUN apk update && apk add --virtual build-dependencies build-base gcc wget git openssl
 
 WORKDIR /app
